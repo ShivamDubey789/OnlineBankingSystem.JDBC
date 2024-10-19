@@ -5,12 +5,15 @@ import java.util.Scanner;
 
 
 
-import bank.dao.AccountantDaoimpl;
+
 import bank.exception.AccountantException;
 import bank.exception.CustomerException;
 import bank.model.Accountant;
 import bank.model.Customer;
-import bank.dao.AccountantDao;
+import bank.service.AccountantServiceImpl;
+import bank.service.AccountantService;
+import bank.service.CustomerService;
+import bank.service.CustomerServiceImpl;
 import bank.dao.CustomerDao;
 import bank.dao.CustomerDaoImpl;
 
@@ -28,7 +31,7 @@ public class App {
 			
 			
 			
-			System.out.println("!! Choose an Option !!");
+			System.out.println("!! Choose an Option !!\n");
 			System.out.println("1. Accountant Login\n"
 					+ "2. Customer Login");
 			System.out.println("Enter Value : ");
@@ -46,13 +49,13 @@ public class App {
 					System.out.println("Enter Password: ");
 					String pass = sc.next();
 			
-					AccountantDao ad = new AccountantDaoimpl();
+					AccountantService accountantService = new AccountantServiceImpl();
 			
 					
 			
 					try {
 					
-						Accountant a = ad.LoginAccountant(username, pass);
+						Accountant a = accountantService.loginAccountant(username, pass);
 					
 						if(a==null) {
 						
@@ -98,12 +101,12 @@ public class App {
 								int s1 = -1;
 								
 								try {
-									s1 = ad.addCustomer(a1,a3,a4,a5,a6);
+									s1 = accountantService.addCustomer(a1,a3,a4,a5,a6);
 									
 									
 									try {
 										
-										ad.addAccount(a2, s1);
+										accountantService.addAccount(a2, s1);
 										
 									}catch(CustomerException e){
 										
@@ -126,7 +129,7 @@ public class App {
 								String u2 = sc.next();
 								
 								try {
-										ad.updateCustomer(u, u2);
+									accountantService.updateCustomer(u, u2);
 								} catch (CustomerException e) {
 									
 									e.printStackTrace();
@@ -141,7 +144,7 @@ public class App {
 								int ac = sc.nextInt();
 								String s = null;
 								try {
-									s = ad.deleteAccount(ac);
+									s = accountantService.deleteAccount(ac);
 								}catch(CustomerException e) {
 									
 									e.printStackTrace();
@@ -158,7 +161,7 @@ public class App {
 								String ac = sc.next();
 								
 								try {
-									Customer cus = ad.viewCustomer(ac);
+									Customer cus = accountantService.viewCustomer(ac);
 								
 									if(cus != null) {
 										System.out.println(" Customer Account Number : "+cus.getCustomerAccountNumber());
@@ -189,7 +192,7 @@ public class App {
 								try {
 									System.out.println("!! All Customer List !!");
 									System.out.println("/n");
-									Customer cus = ad.viewAllCustomer();
+									Customer cus = accountantService.viewAllCustomer();
 								}catch(CustomerException e ) {
 									
 									e.printStackTrace();
@@ -220,11 +223,11 @@ public class App {
 					int accountNumber = sc.nextInt();
 					System.out.println("");
 					
-					CustomerDao cd = new CustomerDaoImpl();
+					CustomerService customerService = new CustomerServiceImpl();
 					
 					try {
 						
-						Customer cus = cd.LoginCustomer(customerUsername, customerPassword, accountNumber);
+						Customer cus = customerService.loginCustomer(customerUsername, customerPassword, accountNumber);
 						System.out.println("Welcome "+ cus.getCustomerName());
 						System.out.println("");
 					
@@ -244,7 +247,7 @@ public class App {
 							
 							if(x == 1 ) {
 								System.out.println("!! Current Balance !!");
-								System.out.println(cd.viewBalance(accountNumber));
+								System.out.println(customerService.viewBalance(accountNumber));
 								
 							}
 							
@@ -253,10 +256,10 @@ public class App {
 								System.out.println("Enter Deposit Amount: ");
 								int am = sc.nextInt();
 								
-								cd.Deposit(accountNumber, am);
+								customerService.deposit(accountNumber, am);
 								
 								System.out.println("Your Balance after Deposit");
-								System.out.println(cd.viewBalance(accountNumber));
+								System.out.println(customerService.viewBalance(accountNumber));
 								System.out.println("");
 							}
 						
@@ -267,12 +270,12 @@ public class App {
 								int am = sc.nextInt();
 								
 								try {
-									cd.Withdraw(accountNumber, am);
+									customerService.withdraw(accountNumber, am);
 									System.out.println("Your Balance after Withdrawal");
-									System.out.println(cd.viewBalance(accountNumber));
+									System.out.println(customerService.viewBalance(accountNumber));
 									System.out.println("");
 								} catch (CustomerException e) {
-									// TODO Auto-generated catch block
+								
 									System.out.println(e.getMessage());
 								}
 							}
@@ -285,7 +288,7 @@ public class App {
 								int ac = sc.nextInt();
 								
 								try {
-									cd.Transfer(accountNumber, t, ac);
+									customerService.transfer(accountNumber, t, ac);
 									System.out.println("Amount Transfered Successfully");
 									System.out.println("");
 								}catch(Exception e) {
@@ -310,5 +313,6 @@ public class App {
 			
 			}
 		}
+		sc.close();
 	}
 }
