@@ -1,12 +1,17 @@
 package bank.service;
 
+import java.util.List;
+
 import bank.dao.AccountantDao;
+import bank.dao.CustomerDao;
 import bank.dao.AccountantDaoimpl;
 import bank.exception.AccountantException;
 import bank.exception.CustomerException;
 import bank.model.Accountant;
 import bank.model.Customer;
+import bank.model.Transaction;
 import bank.service.AccountantService;
+
 
 public class AccountantServiceImpl implements AccountantService {
     private AccountantDao accountantDao = new AccountantDaoimpl();
@@ -46,4 +51,6 @@ public class AccountantServiceImpl implements AccountantService {
     public Customer viewAllCustomer() throws CustomerException {
         return accountantDao.viewAllCustomer();
     }
+    
+
 }

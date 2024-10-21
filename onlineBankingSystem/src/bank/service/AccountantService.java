@@ -1,9 +1,12 @@
 package bank.service;
 
+import java.util.List;
+
 import bank.exception.AccountantException;
 import bank.exception.CustomerException;
 import bank.model.Accountant;
 import bank.model.Customer;
+import bank.model.Transaction;
 
 public interface AccountantService {
 
@@ -20,4 +23,5 @@ public interface AccountantService {
     Customer viewCustomer(String accountNumber) throws CustomerException;
     
     Customer viewAllCustomer() throws CustomerException;
-}
+
+   }

@@ -1,6 +1,7 @@
 package bank.Usecase;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -10,6 +11,7 @@ import bank.exception.AccountantException;
 import bank.exception.CustomerException;
 import bank.model.Accountant;
 import bank.model.Customer;
+import bank.model.Transaction;
 import bank.service.AccountantServiceImpl;
 import bank.service.AccountantService;
 import bank.service.CustomerService;
@@ -43,7 +45,7 @@ public class App {
 			switch(choice) {
 			
 				case 1 :
-					System.out.println("!! Accountant Login!! /n");
+					System.out.println("!! Accountant Login!!\n");
 					System.out.println("Enter Username: ");
 					String username = sc.next();
 					System.out.println("Enter Password: ");
@@ -70,8 +72,7 @@ public class App {
 						
 						while(y) {
 							
-							System.out.println("\n"
-									+"   !! Choose an Option !!  "
+							System.out.println("!! Choose an Option !!\n"
 									+"1. add new Customer Account\n"
 									+"2. Update Customer Address\n"
 									+"3. Delete Account \n"
@@ -204,6 +205,8 @@ public class App {
 								y = false;
 							}
 							
+							
+							
 						}
 					} catch (AccountantException e) {
 						System.out.println(e.getMessage());
@@ -240,7 +243,8 @@ public class App {
 									+"2. Deposite Money \n"
 									+"3. Withdraw Money \n"
 									+"4. Transfer Money \n"
-									+"5. Logout \n");
+									+"5. Transactions History \n"
+									+"6. Logout");
 							
 						
 							int x = sc.nextInt();
@@ -297,13 +301,37 @@ public class App {
 								}
 							}
 							
-							if(x == 5) {
+							
+							if (x == 5) { // Assuming this is the next available option
+							    System.out.println("!! Transaction History !!");
+							    System.out.println("Enter your Account Number: ");
+							    int accountNum = sc.nextInt();
+							    
+							    try {
+							        List<Transaction> transactions = customerService.viewTransactionHistory(accountNum);
+							        if (transactions.isEmpty()) {
+							            System.out.println("No transactions found for this account.");
+							        } else {
+							            System.out.println("Transaction History:");
+							            for (Transaction t : transactions) {
+							                System.out.println(t);
+							            }
+							        }
+							    } catch (CustomerException e) {
+							        System.out.println(e.getMessage());
+							    }
+							}
+							
+							if(x == 6) {
 								
 								System.out.println("Customer Logout Successfully");
 								System.out.println("thank you for using our services");
 								m = false;
 							}
 							
+							
+
+						
 							break;
 							
 						}
